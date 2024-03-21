@@ -6,9 +6,7 @@ import HeaderMain from './components/HeaderMain.vue';
 </script>
 
 <template>
-  <HeaderMain />
-  <CarouselSlide />
-  <StoreList />
+  <RouterView />
 </template>
 
 <style scoped>
