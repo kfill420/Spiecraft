@@ -4,7 +4,6 @@
       <div class="carousel__item">
         <img :src="image.url"/>
       </div>
-      <!--<img :src="image.url"/>-->
     </Slide>
 
     <template #addons>
@@ -33,17 +32,13 @@ export default defineComponent({
         {id: 3, url: 'src/assets/img/3.png'},
         {id: 4, url: 'src/assets/img/4.png'},
         {id: 5, url: 'src/assets/img/5.png'}
-      ]
+      ],
     }
   }
 });
 </script>
 
 <style>
-img{
-
-}
-
 .carousel__item {
   min-height: 200px;
   max-height: 35vh;

@@ -3,17 +3,19 @@ import logo from '@/assets/img/logo.png'
 import connectBtn from '@/assets/img/ico/user-solid.svg'
 import cartBtn from '@/assets/img/ico/cart-shopping-solid.svg'
 import AuthModal from '../components/AuthModal.vue';
+import { ref } from 'vue';
 
-const openModal = () => {
-  const modal = document.querySelector(".modal");
-  modal.classList.add("is-active")
+const modalIsOpen = ref(false);
+
+const toggleModal = () => {
+  modalIsOpen.value = !modalIsOpen.value;
 }
 
 </script>
 
 <template>
 
-  <AuthModal />
+  <AuthModal :modalIsOpen="modalIsOpen" @toggleModal="toggleModal"/>
 
   <nav class="navbar mb-4" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
@@ -56,7 +58,7 @@ const openModal = () => {
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons ">
-          <a class="icoLink m-2" @click="openModal">
+          <a class="icoLink m-2" @click="toggleModal">
             <img class="ico" :src="connectBtn" alt="connect"/>
           </a>
           <a class="icoLink m-2">
