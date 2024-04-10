@@ -1,17 +1,30 @@
 <script setup>
+  import { ref, onMounted } from 'vue';
   import ProductItem from './ProductItem.vue';
+  import { fetchAllProducts } from '@/components/service/database';
+
+  const products = ref([]);
+
+  const fetchProduct = async () => {
+    try {
+      const response = await fetchAllProducts();
+      products.value = response;
+    } catch (error) {
+      console.log('error fetching: ', error);
+    }
+  }
+
+  onMounted(() => {
+    fetchProduct();
+  });
+  
 </script>
 
 <template>
   <div class="store-container">
     <h1 class="title is-2">Trésors de poivre</h1>
     <div class="is-flex is-flex-direction-row is-flex-wrap-wrap store">
-      <ProductItem name="Poivre noire" description="Un poivre très doux" :price="5" />
-      <ProductItem name="Poivre blanc" description="Un poivre spécial" :price="7" />
-      <ProductItem name="Poivre noire" description="Un poivre très doux" :price="5" />
-      <ProductItem name="Poivre blanc" description="Un poivre spécial" :price="7" />
-      <ProductItem name="Poivre noire" description="Un poivre très doux" :price="5" />
-      <ProductItem name="Poivre blanc" description="Un poivre spécial" :price="7" />
+      <ProductItem v-for="product in products" :key="product.key" :id="product.id" :name="product.name" :description="product.description" :price="product.price" />
     </div>
   </div>
   

@@ -1,11 +1,20 @@
 <script setup>
 import logo from '@/assets/img/logo.png'
 import connectBtn from '@/assets/img/ico/user-solid.svg'
-import signupBtn from '@/assets/img/ico/cart-shopping-solid.svg'
+import cartBtn from '@/assets/img/ico/cart-shopping-solid.svg'
+import AuthModal from '../components/AuthModal.vue';
+
+const openModal = () => {
+  const modal = document.querySelector(".modal");
+  modal.classList.add("is-active")
+}
 
 </script>
 
 <template>
+
+  <AuthModal />
+
   <nav class="navbar mb-4" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="container-logo" href="/">
@@ -47,11 +56,11 @@ import signupBtn from '@/assets/img/ico/cart-shopping-solid.svg'
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons ">
-          <a class="icoLink m-2">
+          <a class="icoLink m-2" @click="openModal">
             <img class="ico" :src="connectBtn" alt="connect"/>
           </a>
           <a class="icoLink m-2">
-            <img class="ico" :src="signupBtn" alt="signup"/>
+            <img class="ico" :src="cartBtn" alt="signup"/>
           </a>
         </div>
       </div>

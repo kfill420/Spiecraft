@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:front": "cd front && pnpm run dev",
     "dev:back": "cd back && pnpm run dev",
-    "dev": "concurrently \"cd front && pnpm run dev\""
+    "dev": "concurrently \"cd front && pnpm run dev\" \"cd back && pnpm run dev\""
   },
   "keywords": [],
   "author": "",
