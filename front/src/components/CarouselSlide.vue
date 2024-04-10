@@ -2,7 +2,7 @@
   <Carousel :autoplay="3500" :wrap-around="true">
     <Slide v-for="(image) in images" :key="image.id">
       <div class="carousel__item">
-        <img :src="image.url"/>
+        <img :src="isSmallScreen ? image.urlSmall : image.url"/>
       </div>
     </Slide>
 
@@ -27,13 +27,30 @@ export default defineComponent({
   data() {
     return {
       images: [
-        {id: 1, url: 'src/assets/img/1.png'},
-        {id: 2, url: 'src/assets/img/2.png'},
-        {id: 3, url: 'src/assets/img/3.png'},
-        {id: 4, url: 'src/assets/img/4.png'},
-        {id: 5, url: 'src/assets/img/5.png'}
+        {id: 1, url: 'src/assets/img/1.png', urlSmall: 'src/assets/img/full/1.png'},
+        {id: 2, url: 'src/assets/img/2.png', urlSmall: 'src/assets/img/full/2.png'},
+        {id: 3, url: 'src/assets/img/3.png', urlSmall: 'src/assets/img/full/3.png'},
+        {id: 4, url: 'src/assets/img/4.png', urlSmall: 'src/assets/img/full/4.png'},
+        {id: 5, url: 'src/assets/img/5.png', urlSmall: 'src/assets/img/full/5.png'}
       ],
+      viewport: window.innerWidth
     }
+  },
+  computed: {
+    isSmallScreen() {
+      return this.viewport < 780;
+    }
+  },
+  methods: {
+    handleResize() {
+      this.viewport =  window.innerWidth;
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
 });
 </script>
