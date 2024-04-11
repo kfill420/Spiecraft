@@ -1,9 +1,11 @@
 const { Router } = require("express")
 const productRouter = require("./productRouter");
+const userRouter = require("./userRouter");
 
 const mainRouter = new Router();
 
 mainRouter.use(productRouter);
+mainRouter.use(userRouter);
 
 mainRouter.use(notFoundMiddlewar);
 

@@ -3,12 +3,11 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize(process.env.PG_URL, {
+  logging: false,
   define: {
-    underscored: true,
     createdAt: "created_at",
     updatedAt: "updated_at"
-  },
-  logging: false
+  }
 });
 
 module.exports = sequelize;

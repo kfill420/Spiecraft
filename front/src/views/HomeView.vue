@@ -1,6 +1,4 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import { ref } from 'vue';
 import StoreList from '../components/StoreList.vue';
 import CarouselSlide from '../components/CarouselSlide.vue';
 import HeaderMain from '../components/HeaderMain.vue';

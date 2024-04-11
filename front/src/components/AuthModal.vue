@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue';
+import { signup } from '@/components/service/database';
+import { signin } from '@/components/service/database';
 
   defineProps({
     modalIsOpen: Boolean,
@@ -12,9 +14,30 @@ import { ref } from 'vue';
   }
 
   const loginFormSelected = ref(true);
+  const signupFormValue = ref({
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: ''
+  });
+  const signinFormValue = ref({
+    email: '',
+    password: ''
+  });
 
   const toggleForm = () => {
     loginFormSelected.value = !loginFormSelected.value;
+  }
+
+  const submitSignupForm = async () => {
+    const signupV = signupFormValue.value;
+    await signup(signupV);
+  }
+
+  const submitSigninForm = async () => {
+    const signinV = signinFormValue.value;
+    const response = await signin(signinV);
+    console.log(response);
   }
 
 </script>
@@ -27,43 +50,43 @@ import { ref } from 'vue';
       <header class="modal-card-head">
         <ul v-if="loginFormSelected" class="tab-group">
           <li class="tab active" ><span class="active">Se connecter</span></li>
-          <li class="tab"><a @click="toggleForm">S'inscrire</a></li>
+          <li class="tab clicable"><a class="toggleForm" @click="toggleForm">S'inscrire</a></li>
         </ul>
         <ul v-if="!loginFormSelected" class="tab-group">
           <li class="tab"><span class="active">S'inscrire</span></li>
-          <li class="tab"><a @click="toggleForm">Se connecter</a></li>
+          <li class="tab clicable"><a class="toggleForm" @click="toggleForm">Se connecter</a></li>
         </ul>
         <button class="delete" aria-label="close" @click="closeModal"></button>
       </header>
       <section class="modal-card-body">
-        <form :class="{ formActive : loginFormSelected }">
+        <form :class="{ formActive : loginFormSelected }" @submit.prevent="submitSigninForm">
           <div class="login-field">
-            <input type="text" name="" required>
+            <input v-model="signinFormValue.email" type="text" required>
             <label>Email</label>
           </div>
           <div class="login-field">
-            <input type="password" name="" required>
+            <input v-model="signinFormValue.password" type="password" required>
             <label>Password</label>
           </div>
           <button type="submit" class="button is-primary submitBtn">Se connecter</button>
         </form>
-        <form :class="{ formActive : !loginFormSelected }">
+        <form :class="{ formActive : !loginFormSelected }" @submit.prevent="submitSignupForm">
           <div class="login-field login-field-demi">
             <div class="login-field">
-              <input type="text" name="" required>
+              <input v-model="signupFormValue.firstname" type="text" required>
               <label>Prénom</label>
             </div>
             <div class="login-field">
-              <input type="text" name="" required>
+              <input v-model="signupFormValue.lastname" type="text" required>
               <label>Nom</label>
             </div>
           </div>
           <div class="login-field">
-            <input type="text" name="" required>
+            <input v-model="signupFormValue.email" type="text" required>
             <label>Email</label>
           </div>
           <div class="login-field">
-            <input type="password" name="" required>
+            <input v-model="signupFormValue.password" type="password" required>
             <label>Password</label>
           </div>
           <button type="submit" class="button is-primary submitBtn">S'inscrire</button>
@@ -80,31 +103,52 @@ header {
   text-align: end;
   width: 100%;
 
-  ul {
+  .tab-group {
   list-style: none;
   display: flex;
   width: 100%;
   justify-content: space-between;
 
-  li {
-  display: block;
-  display: flex;
-  align-items: center;
+    li {
+    display: block;
+    display: flex;
+    align-items: center;
+    position: relative;
 
-    a {
-    text-decoration: none;
-    }
+      a {
+      text-decoration: none;
+      }
 
-    .active {
-      font-size:x-large
+      .active {
+        font-size: x-large
+      }
+
+
+      .toggleForm {
+        border-radius: 5px;
+      }
+      .toggleForm:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 50%;
+        width: 0;
+        height: 2px;
+        background-color: #00C4A7;
+        transition: all 0.2s ease-in-out;
+      }
+      .toggleForm:hover:after {
+        width: 100%;
+        right: 0;
+        transition: all 0.3s ease-in-out;
+      }
     }
   }
-}
 
   .delete {
     position: absolute;
-    top: 12%;
-    right: 2%;
+    top: 8%;
+    right: 1%;
   }
 }
 
