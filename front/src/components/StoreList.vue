@@ -1,13 +1,13 @@
 <script setup>
   import { ref, onMounted } from 'vue';
   import ProductItem from './ProductItem.vue';
-  import { fetchAllProducts } from '@/components/service/database';
+  import { fetchAllProductsData } from '@/components/service/database';
 
   const products = ref([]);
 
   const fetchProduct = async () => {
     try {
-      const response = await fetchAllProducts();
+      const response = await fetchAllProductsData();
       products.value = response;
     } catch (error) {
       console.log('error fetching: ', error);

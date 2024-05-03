@@ -1,4 +1,5 @@
 const sanitizeHtml = require("sanitize-html");
+const jwt = require('jsonwebtoken');
 const validator = require("email-validator");
 const bcrypt = require("bcrypt");
 const Users = require("../models/users");
@@ -22,7 +23,6 @@ async function signupUser(req, res) {
     return res.json({ errorMessage: "Le mot de passe doit faire au minimum 1 lettre" });
 
   const existingUser = await Users.findOne({ where: { email: email } });
-  console.log(existingUser);
   if (existingUser !== null)
     return res.json({ errorMessage: "L'adresse email existe déjà" });
 
@@ -37,23 +37,52 @@ async function signupUser(req, res) {
   });
 
   return res.json("success")
-}
+};
 
 async function signinUser(req, res) {
+  if (req.session.user)
+    return res.json({ errorMessage: "Déjà connecté" });
+
   const { email, password } = req.body;
 
   const user = await Users.findOne({ where: { email: email } });
   if (!user)
-    return res.json({ errorMessage: "Erreur email - mot de passe" });
+    return res.status(401).json({ errorMessage: "Email ou mot de passe incorrecte" });
 
   const isMatching = await bcrypt.compare(password, user.password);
   if (!isMatching)
-    return res.json({ errorMessage: "Erreur email - mot de passe" });
+    return res.status(401).json({ errorMessage: "Email ou mot de passe incorrecte" });
 
-  req.session.userId = user.id;
 
-  return res.json("success login" + req.session.userId);
-}
+  const firstnameData = user.dataValues.firstname;
+  const lastnameData = user.dataValues.lastname;
+  const userId = user.dataValues.id;
+  const fullnameData = { firstnameData, lastnameData };
+  const emailData = user.dataValues.email;
+  const userData = { userId, fullnameData, emailData }
+  const token = jwt.sign(userData, 'secret', { expiresIn: '1h' });
+
+  return res.status(200).json({ message: "Connexion réussie", token });
+};
+
+async function getUserData(req, res) {
+  if (!req.session.user)
+    return res.json({ errorMessage: "Vous n'êtes pas connecté" });
+
+  const user = await Users.findOne({ where: { email: email } });
+  console.log(user);
+  if (!user)
+    return res.status(401).json({ errorMessage: "Email ou mot de passe incorrecte" });
+
+  const isMatching = await bcrypt.compare(password, user.password);
+  if (!isMatching)
+    return res.status(401).json({ errorMessage: "Email ou mot de passe incorrecte" });
+
+  const token = jwt.sign({ userId: user.id }, 'secret')
+  const firstname = user.dataValues.firstname;
+
+  return res.status(200).json({ message: "Connexion réussie", token, firstname });
+};
 
 module.exports = {
   signupUser,

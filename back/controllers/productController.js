@@ -1,5 +1,4 @@
-const sanitizeHtml = require("sanitize-html");
-const Product = require("../models/product");
+const { Product } = require("../models");
 
 async function getAllProduct(req, res) {
   const products = await Product.findAll();

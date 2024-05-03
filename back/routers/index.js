@@ -1,17 +1,26 @@
-const { Router } = require("express")
+const express = require("express")
+const session = require("express-session");
 const productRouter = require("./productRouter");
 const userRouter = require("./userRouter");
+const cartRouter = require("./cartRouter");
+const sessionMiddleware = require("../middlewares/sessionMiddleware");
+const notFoundMiddleware = require("../middlewares/notFoundMiddleware");
 
-const mainRouter = new Router();
+const app = new express();
 
-mainRouter.use(productRouter);
-mainRouter.use(userRouter);
+app.use(session({
+  saveUninitialized: true,
+  resave: true,
+  secret: process.env.SESSION_SECRET,
+  cookie: { secure: false }
+}));
 
-mainRouter.use(notFoundMiddlewar);
+app.use(express.urlencoded({ extended: true }));
 
-function notFoundMiddlewar(req, res, next) {
-  res.status(404).json({ error: "Data not found." });
-  next();
-}
+app.use(productRouter);
+app.use(userRouter);
+app.use(cartRouter);
 
-module.exports = mainRouter;
+app.use(notFoundMiddleware);
+
+module.exports = app;

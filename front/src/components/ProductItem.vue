@@ -1,30 +1,40 @@
 <script setup>
   import { ref } from 'vue';
 
-  const props = defineProps({
+  defineProps({
     id: Number,
     name: String,
     description: String,
     price: Array
   });
 
-  const weightSelected = ref('0');
   const productRef = ref(null);
   const imageRef = ref(null);
+  const selectedIndex = ref(0);
+  const weightSelect = ref(5);
+
+  const options = [5, 10, 20];
 
   const getImageUrl = (id) => {
     return `src/assets/product/${id}.jpg`;
-  }
+  };
+
+  const handleWeightChange = (e) => {
+    selectedIndex.value =  e.target.selectedIndex;
+  };
+
+  const handleSubmit = () => {
+    const value = weightSelect.value;
+    console.log(localStorage);
+  };
 
   const zoomIn = () => {
-    productRef.value.classList.add('productZoomed');
     imageRef.value.classList.add('imageZoomed');
-  }
+  };
 
   const zoomOut = () => {
-    productRef.value.classList.remove('productZoomed');
     imageRef.value.classList.remove('imageZoomed');
-  }
+  };
 
 </script>
 
@@ -39,13 +49,13 @@
     <div class="card-content">
       <p class="title is-4 mb-2">{{ name }}</p>
       <p class="title is-6 mb-2">{{ description }}</p>
-      <p class="title is-5 mb-2" >{{ price[weightSelected] }}€</p>
-      <select v-model="weightSelected" @change="handleWeightChange" class="select is-fullwidth mb-2">
-        <option value="0">Poids - 5g</option>
-        <option value="1">Poids - 10g</option>
-        <option value="2">Poids - 20g</option>
-      </select>
-      <button class="button is-primary is-fullwidth">Ajouter au panier</button>
+      <p class="title is-5 mb-2" >{{ price[selectedIndex] }}€</p>
+      <form @submit.prevent="handleSubmit">
+        <select v-model="weightSelect" @change="handleWeightChange" class="select is-fullwidth mb-2">
+          <option v-for="(option, index) in options" :key="index" :value=option>Poids - {{ option }}g</option>
+        </select>
+        <button type="submit" class="button is-primary is-fullwidth">Ajouter au panier</button>
+      </form>
     </div>
 
   </div>
@@ -65,10 +75,6 @@
 
 .card-content {
   background-color: #EDEDED;
-}
-
-.productZoomed {
-  transform: scale(1.05);
 }
 
 .imageZoomed {

@@ -10,7 +10,3 @@ import HeaderMain from '../components/HeaderMain.vue';
   <CarouselSlide />
   <StoreList />
 </template>
-
-<style scoped>
-  @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
-</style>

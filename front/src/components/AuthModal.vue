@@ -1,17 +1,17 @@
 <script setup>
-import { ref } from 'vue';
-import { signup } from '@/components/service/database';
-import { signin } from '@/components/service/database';
+import { ref, defineEmits } from 'vue';
+import { signup, signin } from '@/components/service/database';
 
   defineProps({
     modalIsOpen: Boolean,
-  })
+    isLogged: Boolean,
+  });
   
-  const emits = defineEmits(['toggleModal']);
+  const emits = defineEmits(['toggleModal', 'isLogged', 'setUsername']);
 
   const closeModal = () => {
     emits('toggleModal');
-  }
+  };
 
   const loginFormSelected = ref(true);
   const signupFormValue = ref({
@@ -25,6 +25,8 @@ import { signin } from '@/components/service/database';
     password: ''
   });
 
+  const errorMessage = ref(null);
+
   const toggleForm = () => {
     loginFormSelected.value = !loginFormSelected.value;
   }
@@ -32,14 +34,25 @@ import { signin } from '@/components/service/database';
   const submitSignupForm = async () => {
     const signupV = signupFormValue.value;
     await signup(signupV);
+    closeModal();
   }
 
   const submitSigninForm = async () => {
-    const signinV = signinFormValue.value;
-    const response = await signin(signinV);
-    console.log(response);
+    try {
+      const signinV = signinFormValue.value;
+      const response = await signin(signinV);
+      const token = response.token
+      localStorage.setItem('token', token);
+      emits('isLogged');
+      closeModal();
+      errorMessage.value = null;
+    } catch (error) {
+      const errMess = error.response.data.errorMessage
+      console.error(errMess);
+      errorMessage.value = errMess;
+    }
   }
-
+  
 </script>
 
 <template>
@@ -91,6 +104,7 @@ import { signin } from '@/components/service/database';
           </div>
           <button type="submit" class="button is-primary submitBtn">S'inscrire</button>
         </form>
+          <span class="error">{{errorMessage}}</span>
       </section>
     </div>
   </div>
@@ -200,6 +214,13 @@ form {
 
 .submitBtn {
   width: 20%;
+}
+
+.error {
+  position: absolute;
+  bottom: 0;
+  color: #9B0202;
+  font-weight: 900;
 }
 
 </style>
