@@ -16,7 +16,7 @@ const weightSelect = ref(5);
 const options = [5, 10, 20];
 
 const getImageUrl = (id) => {
-  return `src/assets/product/${id}.jpg`;
+  return `product/${id}.jpg`;
 };
 
 const handleWeightChange = (e) => {
