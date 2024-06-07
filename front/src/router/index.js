@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import CartView from '../views/CartView.vue';
 import ProfilView from '@/views/ProfilView.vue';
 
 const router = createRouter({
@@ -17,6 +18,11 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/cart',
+      name: 'CartView',
+      component: CartView,
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
@@ -29,8 +35,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (JSON.parse(localStorage.getItem('userData'))) {
-      const token = JSON.parse(localStorage.getItem('userData')).token;
+    if (JSON.parse(localStorage.getItem('token'))) {
+      console.log(JSON.parse(localStorage.getItem('token')));
+      const token = JSON.parse(localStorage.getItem('token')).token;
       if (!token) next({ path: '/' });
       else {
         try {

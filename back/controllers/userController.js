@@ -46,6 +46,7 @@ async function signinUser(req, res) {
   const { email, password } = req.body;
 
   const user = await Users.findOne({ where: { email: email } });
+  console.log(user);
   if (!user)
     return res.status(401).json({ errorMessage: "Email ou mot de passe incorrecte" });
 

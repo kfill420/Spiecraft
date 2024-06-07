@@ -42,7 +42,7 @@ onMounted(() => {
     logged.value = !!token;
     username.value = decoded.fullnameData.firstnameData;
   }
-  
+
 });
 
 onUpdated(() => {
@@ -57,85 +57,86 @@ onUpdated(() => {
 
 <template>
 
-  <AuthModal :modalIsOpen="modalIsOpen" @toggleModal="toggleModal" :logged=logged @isLogged="isLogged" :username=username @setUsername="handleUsername" />
+  <AuthModal :modalIsOpen="modalIsOpen" @toggleModal="toggleModal" :logged=logged @isLogged="isLogged"
+    :username=username @setUsername="handleUsername" />
 
   <nav class="navbar mb-4" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <span class="container-logo">
-      <img :src="logo" width="100px">
-    </span>
+    <div class="navbar-brand">
+      <router-link to="/" class="container-logo">
+        <img :src="logo" width="100px">
+      </router-link>
 
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-
-  <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-start">
-      <a class="navbar-item">
-        Nos produits
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
       </a>
+    </div>
 
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          Plus
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item">
+          Nos produits
         </a>
 
-        <div class="navbar-dropdown">
-          <a class="navbar-item">
-            A propos de nous
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Plus
           </a>
-          <a class="navbar-item">
-            La livraison
-          </a>
-          <a class="navbar-item">
-            Nous contacter
-          </a>
-        </div>
-      </div>
-    </div>
 
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons ">
-          <p v-if="logged" class="salutation">Bonjour {{ username }}</p>
-          <a v-if="logged" class="icoLink m-2" @click="logoutAction()">
-            <img class="ico" :src="logoutBtn" alt="lougout button"/>
-          </a>
-          <a v-if="!logged" class="icoLink m-2" @click="toggleModal">
-            <img class="ico" :src="connectBtn" alt="connect button"/>
-          </a>
-          <RouterLink to="/profil" v-else class="icoLink m-2">
-            <img class="ico" :src="connectBtn" alt="connect button"/>
-          </RouterLink>
-          <a class="icoLink m-2">
-            <img class="ico" :src="cartBtn" alt="signup button"/>
-          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item">
+              A propos de nous
+            </a>
+            <a class="navbar-item">
+              La livraison
+            </a>
+            <a class="navbar-item">
+              Nous contacter
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons ">
+            <p v-if="logged" class="salutation">Bonjour {{ username }}</p>
+            <a v-if="logged" class="icoLink m-2" @click="logoutAction()">
+              <img class="ico" :src="logoutBtn" alt="lougout button" />
+            </a>
+            <a v-if="!logged" class="icoLink m-2" @click="toggleModal">
+              <img class="ico" :src="connectBtn" alt="connect button" />
+            </a>
+            <RouterLink v-else to="/profil" class="icoLink m-2">
+              <img class="ico" :src="connectBtn" alt="connect button" />
+            </RouterLink>
+            <router-link to="/cart" class="icoLink m-2">
+              <img class="ico" :src="cartBtn" alt="signup button" />
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
 </template>
 
 <style scoped>
-  .icoLink {
-    height: 150%;
-  }
+.icoLink {
+  height: 150%;
+}
 
-  .ico {
-    width: 20px;
-    height: 20px;
-  }
+.ico {
+  width: 20px;
+  height: 20px;
+}
 
-  a:hover{
-    background-color: white;
-  }
+a:hover {
+  background-color: white;
+}
 
-  .salutation {
-    margin-right: 2rem;
-    transform: translateY(-20%);
-  }
+.salutation {
+  margin-right: 2rem;
+  transform: translateY(-20%);
+}
 </style>

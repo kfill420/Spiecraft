@@ -10,6 +10,11 @@ export async function fetchCartData() {
   return responseHttp.data;
 }
 
+export async function addToCart() {
+  const responseHttp = await instanceAxios.post(`/cart`);
+  return responseHttp.data;
+}
+
 export async function fetchAllProfileInfos() {
   const responseHttp = await instanceAxios.get(`/products`);
   return responseHttp.data;
@@ -22,5 +27,7 @@ export async function signup(signupV) {
 
 export async function signin(siginpV) {
   const responseHttp = await instanceAxios.post(`/signin`, siginpV);
+  console.log(siginpV);
+  console.log(responseHttp);
   return responseHttp.data;
 }

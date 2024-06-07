@@ -2,67 +2,79 @@
 import { ref, defineEmits } from 'vue';
 import { signup, signin } from '@/components/service/database';
 
-  defineProps({
-    modalIsOpen: Boolean,
-    isLogged: Boolean,
-  });
-  
-  const emits = defineEmits(['toggleModal', 'isLogged', 'setUsername']);
+defineProps({
+  modalIsOpen: Boolean,
+  isLogged: Boolean,
+});
 
-  const closeModal = () => {
-    emits('toggleModal');
-  };
+const emits = defineEmits(['toggleModal', 'isLogged', 'setUsername']);
 
-  const loginFormSelected = ref(true);
-  const signupFormValue = ref({
+const closeModal = () => {
+  emits('toggleModal');
+};
+
+const loginFormSelected = ref(true);
+const signupFormValue = ref({
+  firstname: '',
+  lastname: '',
+  email: '',
+  password: ''
+});
+const signinFormValue = ref({
+  email: '',
+  password: ''
+});
+
+const errorMessage = ref(null);
+
+const toggleForm = () => {
+  loginFormSelected.value = !loginFormSelected.value;
+}
+
+const resetSignupForm = () => {
+  signupFormValue.value = {
     firstname: '',
     lastname: '',
     email: '',
     password: ''
-  });
-  const signinFormValue = ref({
-    email: '',
-    password: ''
-  });
-
-  const errorMessage = ref(null);
-
-  const toggleForm = () => {
-    loginFormSelected.value = !loginFormSelected.value;
   }
+}
 
-  const submitSignupForm = async () => {
-    const signupV = signupFormValue.value;
-    await signup(signupV);
+const submitSignupForm = async () => {
+  const signupV = signupFormValue.value;
+  await signup(signupV);
+  resetSignupForm();
+  closeModal();
+}
+
+const submitSigninForm = async () => {
+  try {
+    const signinV = signinFormValue.value;
+    console.log(signinV);
+    const response = await signin(signinV);
+    console.log(response);
+    const token = response.token
+    localStorage.setItem('token', token);
+    emits('isLogged');
     closeModal();
+    errorMessage.value = null;
+  } catch (error) {
+    const errMess = error.response.data.errorMessage
+    console.error(errMess);
+    errorMessage.value = errMess;
   }
+}
 
-  const submitSigninForm = async () => {
-    try {
-      const signinV = signinFormValue.value;
-      const response = await signin(signinV);
-      const token = response.token
-      localStorage.setItem('token', token);
-      emits('isLogged');
-      closeModal();
-      errorMessage.value = null;
-    } catch (error) {
-      const errMess = error.response.data.errorMessage
-      console.error(errMess);
-      errorMessage.value = errMess;
-    }
-  }
-  
 </script>
 
 <template>
-  
+
   <div class="modal" :class="{ 'is-active': modalIsOpen }">
     <div class="modal-background" @click="closeModal"></div>
     <div class="modal-card">
       <header class="modal-card-head">
         <ul v-if="loginFormSelected" class="tab-group">
-          <li class="tab active" ><span class="active">Se connecter</span></li>
+          <li class="tab active"><span class="active">Se connecter</span></li>
           <li class="tab clicable"><a class="toggleForm" @click="toggleForm">S'inscrire</a></li>
         </ul>
         <ul v-if="!loginFormSelected" class="tab-group">
@@ -72,7 +84,7 @@ import { signup, signin } from '@/components/service/database';
         <button class="delete" aria-label="close" @click="closeModal"></button>
       </header>
       <section class="modal-card-body">
-        <form :class="{ formActive : loginFormSelected }" @submit.prevent="submitSigninForm">
+        <form :class="{ formActive: loginFormSelected }" @submit.prevent="submitSigninForm">
           <div class="login-field">
             <input v-model="signinFormValue.email" type="text" required>
             <label>Email</label>
@@ -83,7 +95,7 @@ import { signup, signin } from '@/components/service/database';
           </div>
           <button type="submit" class="button is-primary submitBtn">Se connecter</button>
         </form>
-        <form :class="{ formActive : !loginFormSelected }" @submit.prevent="submitSignupForm">
+        <form :class="{ formActive: !loginFormSelected }" @submit.prevent="submitSignupForm">
           <div class="login-field login-field-demi">
             <div class="login-field">
               <input v-model="signupFormValue.firstname" type="text" required>
@@ -104,33 +116,32 @@ import { signup, signin } from '@/components/service/database';
           </div>
           <button type="submit" class="button is-primary submitBtn">S'inscrire</button>
         </form>
-          <span class="error">{{errorMessage}}</span>
+        <span class="error">{{ errorMessage }}</span>
       </section>
     </div>
   </div>
 </template>
 
 <style scoped>
-
 header {
   width: 100%;
   text-align: end;
   width: 100%;
 
   .tab-group {
-  list-style: none;
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
+    list-style: none;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 
     li {
-    display: block;
-    display: flex;
-    align-items: center;
-    position: relative;
+      display: block;
+      display: flex;
+      align-items: center;
+      position: relative;
 
       a {
-      text-decoration: none;
+        text-decoration: none;
       }
 
       .active {
@@ -141,6 +152,7 @@ header {
       .toggleForm {
         border-radius: 5px;
       }
+
       .toggleForm:after {
         content: '';
         position: absolute;
@@ -151,6 +163,7 @@ header {
         background-color: #00C4A7;
         transition: all 0.2s ease-in-out;
       }
+
       .toggleForm:hover:after {
         width: 100%;
         right: 0;
@@ -176,10 +189,10 @@ form {
 }
 
 .formActive {
-  display:flex
+  display: flex
 }
 
-.login-field{
+.login-field {
   position: relative;
   width: 100%;
 }
@@ -206,7 +219,9 @@ form {
   transition: 0.4s;
 }
 
-.login-field input:focus ~ label, .login-field input:valid ~ label {
+/* We select label when input is focus */
+.login-field input:focus~label,
+.login-field input:valid~label {
   top: -0.7rem;
   font-size: 0.7rem;
   color: #001453;
@@ -222,5 +237,4 @@ form {
   color: #9B0202;
   font-weight: 900;
 }
-
 </style>
