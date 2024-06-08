@@ -2,7 +2,7 @@ const sanitizeHtml = require("sanitize-html");
 const jwt = require('jsonwebtoken');
 const validator = require("email-validator");
 const bcrypt = require("bcrypt");
-const Users = require("../models/users");
+const Users = require("../models/Users");
 
 async function signupUser(req, res) {
   const { firstname, lastname, email, password } = req.body;

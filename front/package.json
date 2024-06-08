@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "deploy": "gh-pages -d dist",
-    "dev": "vite",
     "build": "vite build",
+    "dev": "vite",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "resetDB": "psql -U poivre -d poivre -f ./data/create_tables.sql"
