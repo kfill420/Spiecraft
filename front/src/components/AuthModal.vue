@@ -145,7 +145,8 @@ header {
       }
 
       .active {
-        font-size: x-large
+        font-size: x-large;
+        color: #4C4C4C;
       }
 
 
@@ -217,6 +218,7 @@ form {
   left: 0;
   pointer-events: none;
   transition: 0.4s;
+  color: #4C4C4C;
 }
 
 /* We select label when input is focus */
