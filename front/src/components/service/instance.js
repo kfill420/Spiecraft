@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instanceAxios = axios.create({
-  baseURL: import.meta.env.VUE_APP_BASE_URL,
+  baseURL: "https://poivre-back-adffoy4my-vignots-projects.vercel.app/api/",
 });
 
 instanceAxios.interceptors.request.use((config) => {
