@@ -8,7 +8,7 @@ const app = express();
 const cors = require("cors");
 
 app.use(cors({
-  origin: 'https://kfill420.github.io',
+  origin: ['http://localhost:5173', 'https://kfill420.github.io'],
   optionsSuccessStatus: 200
 }));
 
