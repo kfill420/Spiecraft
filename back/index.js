@@ -7,6 +7,10 @@ const port = process.env.PORT || `3000`;
 const app = express();
 const cors = require("cors");
 
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://kfill420.github.io'],
+  optionsSuccessStatus: 200
+}));
 
 app.use(express.static(path.join(__dirname, './public')));
 
@@ -23,9 +27,7 @@ app.use(session({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/api", cors({
-  origin: "*"
-}), router);
+app.use('/api', router);
 
 app.listen(port, () => {
   console.log(`Server ready: http://localhost:${port}`);

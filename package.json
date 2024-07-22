@@ -1,8 +1,10 @@
 {
-  "name": "Vuejs",
+  "name": "spiecraft",
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "deploy": "gh-pages -d dist",
+    "build": "cd ./front && vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:front": "cd front && pnpm run dev",
     "dev:back": "cd back && pnpm run dev",
@@ -12,7 +14,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "gh-pages": "^6.1.1"
   },
   "dependencies": {
     "jsonwebtoken": "^9.0.2",

@@ -16,7 +16,7 @@ const weightSelect = ref(5);
 const options = [5, 10, 20];
 
 const getImageUrl = (id) => {
-  return `src/assets/product/${id}.jpg`;
+  return `product/${id}.jpg`;
 };
 
 const handleWeightChange = (e) => {
@@ -48,9 +48,9 @@ const zoomOut = () => {
       </figure>
     </div>
     <div class="card-content">
-      <p class="title is-4 mb-2">{{ name }}</p>
-      <p class="title is-6 mb-2">{{ description }}</p>
-      <p class="title is-5 mb-2">{{ price[selectedIndex] }}€</p>
+      <p class="title is-6 mb-2 has-text-weight-medium">{{ name }}</p>
+      <p class="title is-7 mb-2 has-text-weight-normal">{{ description }}</p>
+      <p class="title is-6 mb-2 has-text-weight-medium">{{ price[selectedIndex] }}€</p>
       <form @submit.prevent="handleSubmit">
         <select v-model="weightSelect" @change="handleWeightChange" class="select is-fullwidth mb-2">
           <option v-for="(option, index) in options" :key="index" :value=option>Poids - {{ option }}g</option>

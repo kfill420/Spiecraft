@@ -1,6 +1,6 @@
-const Cart = require("./cart");
-const Users = require("./users");
-const Product = require("./product");
+const Cart = require("./Cart");
+const Users = require("./Users");
+const Product = require("./Product");
 
 // Sequelize : 
 // - One-To-One : hasOne + belongsTo

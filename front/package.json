@@ -1,11 +1,13 @@
 {
-  "name": "shop",
+  "homepage": "https://kfill420.github.io/poivre",
+  "name": "poivre",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "deploy": "gh-pages -d dist",
     "build": "vite build",
+    "dev": "vite",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "resetDB": "psql -U poivre -d poivre -f ./data/create_tables.sql"
@@ -14,6 +16,7 @@
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "bulma": "^0.9.4",
+    "gh-pages": "^6.1.1",
     "jwt-decode": "^4.0.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
