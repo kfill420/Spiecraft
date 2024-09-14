@@ -1,4 +1,22 @@
 <script setup>
+import { ref, onMounted } from 'vue';
+import ProductItem from './ProductItem.vue';
+import { fetchCartData } from '@/components/service/database';
+
+const products = ref([]);
+
+const fetchCart = async () => {
+  try {
+    const response = await fetchCartData();
+    products.value = response;
+  } catch (error) {
+    console.log('error fetching: ', error);
+  }
+}
+
+onMounted(() => {
+  fetchCart();
+});
 
 </script>
 

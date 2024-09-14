@@ -1,48 +1,61 @@
 <script setup>
-  import { ref, onMounted } from 'vue';
-  import ProductItem from './ProductItem.vue';
-  import { fetchAllProductsData } from '@/components/service/database';
+import { ref, onMounted } from 'vue';
+import ProductItem from './ProductItem.vue';
+import { fetchAllProductsData } from '@/components/service/database';
 
-  const products = ref([]);
+const products = ref([]);
+const loading = ref(false);
 
-  const fetchProduct = async () => {
-    try {
-      const response = await fetchAllProductsData();
-      products.value = response;
-    } catch (error) {
-      console.log('error fetching: ', error);
-    }
+const fetchProduct = async () => {
+  loading.value = true;
+  try {
+    const response = await fetchAllProductsData();
+    products.value = response;
+  } catch (error) {
+    console.log('error fetching: ', error);
+  } finally {
+    loading.value = false;
   }
+}
 
-  onMounted(() => {
-    fetchProduct();
-  });
-  
+onMounted(() => {
+  fetchProduct();
+});
+
 </script>
 
 <template>
   <div class="store-container">
     <h1 class="title is-2">Trésors de poivre</h1>
-    <div class="is-flex is-flex-direction-row is-flex-wrap-wrap store">
-      <ProductItem v-for="product in products" :key="product.key" :id="product.id" :name="product.name" :description="product.description" :price="product.price" />
+    <div v-if="loading" class="container is-flex is-align-items-center is-justify-content-center">
+      <img class="svg is-three-quarters" src="@/assets/loading.svg" />
+    </div>
+    <div v-else
+      class="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-items-center is-justify-content-center store">
+      <ProductItem class="" v-for="product in products" :key="product.key" :id="product.id" :name="product.name"
+        :description="product.description" :price="product.price" />
     </div>
   </div>
-  
+
 </template>
 
 <style scoped>
-  .store-container {
-    width: 100%;
-  }
+.store-container {
+  width: 100%;
+}
 
-  h1 {
-    font-family: 'Cormorant', serif;
-    font-weight: 900;
-    color: #DADADA
-  }
+h1 {
+  font-family: 'Cormorant', serif;
+  font-weight: 900;
+  color: #DADADA
+}
 
-  .store {
-    width: 100%;
-    gap: 0.5rem;
-  }
+.store {
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.svg {
+  width: 20%;
+}
 </style>

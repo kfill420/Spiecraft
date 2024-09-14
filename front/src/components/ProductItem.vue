@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { addToCart } from '@/components/service/database';
 
 const props = defineProps({
   id: Number,
@@ -12,6 +13,15 @@ const productRef = ref(null);
 const imageRef = ref(null);
 const selectedIndex = ref(0);
 const weightSelect = ref(5);
+
+const addCart = async (id) => {
+  try {
+    const response = await addToCart(id);
+    console.log(response);
+  } catch (error) {
+    console.log('error fetching: ', error);
+  }
+}
 
 const options = [5, 10, 20];
 
@@ -27,6 +37,7 @@ const handleSubmit = () => {
   const value = weightSelect.value;
   console.log(value);
   console.log(props.id);
+  addCart(props.id);
 };
 
 const zoomIn = () => {

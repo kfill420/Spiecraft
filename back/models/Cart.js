@@ -3,7 +3,28 @@ const sequelize = require("../database");
 
 class Cart extends Model { }
 
-Cart.init({}, {
+Cart.init({
+  name: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  weight: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    allowNull: false
+  },
+  price: {
+    type: DataTypes.ARRAY(DataTypes.DECIMAL),
+    allowNull: false
+  },
+  image_url: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  }
+}, {
   sequelize,
   tableName: "cart"
 });

@@ -29,6 +29,7 @@ const errorMessage = ref(null);
 
 const toggleForm = () => {
   loginFormSelected.value = !loginFormSelected.value;
+  errorMessage.value = null;
 }
 
 const resetSignupForm = () => {
@@ -45,6 +46,7 @@ const submitSignupForm = async () => {
   await signup(signupV);
   resetSignupForm();
   closeModal();
+  errorMessage.value = null;
 }
 
 const submitSigninForm = async () => {
@@ -237,6 +239,6 @@ form {
   position: absolute;
   bottom: 0;
   color: #9B0202;
-  font-weight: 900;
+  font-weight: 600;
 }
 </style>

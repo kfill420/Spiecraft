@@ -4,7 +4,7 @@ import connectBtn from '/img/ico/user-solid.svg';
 import cartBtn from '/img/ico/cart-shopping-solid.svg';
 import logoutBtn from '/img/ico/log-out.svg';
 import AuthModal from '../components/AuthModal.vue';
-import { ref, onUpdated, onMounted } from 'vue';
+import { ref, onUpdated, onMounted, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import { jwtDecode } from 'jwt-decode';
 
@@ -35,14 +35,26 @@ const handleUsername = (name) => {
   username.value = name;
 };
 
-onMounted(() => {
+const decodeFirstname = () => {
   const token = localStorage.getItem('token');
   if (token) {
-    const decoded = jwtDecode(token, 'secret');
-    logged.value = !!token;
-    username.value = decoded.fullnameData.firstnameData;
+    try {
+      const decoded = jwtDecode(token, 'secret');
+      logged.value = !!token;
+      username.value = decoded.fullnameData.firstnameData;
+    } catch {
+      console.log('Token invalid');
+      logged.value = false;
+      username.value = '';
+    }
+  } else {
+    logged.value = false;
+    username.value = '';
   }
+}
 
+onMounted(() => {
+  decodeFirstname();
 });
 
 onUpdated(() => {
@@ -50,6 +62,12 @@ onUpdated(() => {
   if (userData) {
     username.value = userData.fullnameData.firstnameData;
     logged.value = !!username.value;
+  }
+});
+
+window.addEventListener('storage', () => {
+  if (event.key === 'token') {
+    decodeFirstname();
   }
 });
 
