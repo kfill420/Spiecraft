@@ -1,5 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router'
+import 'bulma-switch/dist/css/bulma-switch.min.css';
+import 'bulma/css/bulma.css';
 </script>
 
 <template>

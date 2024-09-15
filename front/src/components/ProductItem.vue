@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import { addToCart } from '@/components/service/database';
+import { jwtDecode } from 'jwt-decode';
+import { getImageUrl } from './utils/utils';
 
 const props = defineProps({
   id: Number,
@@ -14,9 +16,11 @@ const imageRef = ref(null);
 const selectedIndex = ref(0);
 const weightSelect = ref(5);
 
-const addCart = async (id) => {
+const addCart = async (id, value, price) => {
   try {
-    const response = await addToCart(id);
+    const token = localStorage.getItem('token');
+    const decoded = jwtDecode(token);
+    const response = await addToCart({userId: decoded.userId, productId: id, quantity: value, price});
     console.log(response);
   } catch (error) {
     console.log('error fetching: ', error);
@@ -25,19 +29,17 @@ const addCart = async (id) => {
 
 const options = [5, 10, 20];
 
-const getImageUrl = (id) => {
-  return `product/${id}.jpg`;
-};
-
 const handleWeightChange = (e) => {
   selectedIndex.value = e.target.selectedIndex;
 };
 
 const handleSubmit = () => {
   const value = weightSelect.value;
-  console.log(value);
-  console.log(props.id);
-  addCart(props.id);
+  // console.log(value);
+  // console.log(props.id);
+  // console.log(selectedIndex.value);
+  // console.log(props.price[selectedIndex.value]);
+  addCart(props.id, value, props.price[selectedIndex.value]);
 };
 
 const zoomIn = () => {

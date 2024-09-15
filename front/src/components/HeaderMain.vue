@@ -4,7 +4,7 @@ import connectBtn from '/img/ico/user-solid.svg';
 import cartBtn from '/img/ico/cart-shopping-solid.svg';
 import logoutBtn from '/img/ico/log-out.svg';
 import AuthModal from '../components/AuthModal.vue';
-import { ref, onUpdated, onMounted, watchEffect } from 'vue';
+import { ref, onUpdated, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { jwtDecode } from 'jwt-decode';
 

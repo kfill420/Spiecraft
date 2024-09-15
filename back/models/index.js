@@ -1,3 +1,3 @@
-const { Users, Cart, Product } = require("./association");
+const { Users, Cart, Product, ProductCart } = require("./association");
 
-module.exports = { Cart, Users, Product };
+module.exports = { Cart, Users, Product, ProductCart };

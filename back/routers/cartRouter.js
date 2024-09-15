@@ -4,7 +4,7 @@ const cw = require("./ControllerErrorWrapper");
 
 const router = new Router();
 
-router.get("/cart", cw(cartController.getCart));
+router.get("/cart/:userId", cw(cartController.getCart));
 router.post("/cart", cw(cartController.addToCart));
 
 module.exports = router;

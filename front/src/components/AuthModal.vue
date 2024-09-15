@@ -47,6 +47,7 @@ const submitSignupForm = async () => {
   resetSignupForm();
   closeModal();
   errorMessage.value = null;
+  loginFormSelected.value = true;
 }
 
 const submitSigninForm = async () => {

@@ -25,19 +25,14 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      //component: () => import('../views/AboutView.vue')
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (JSON.parse(localStorage.getItem('token'))) {
-      console.log(JSON.parse(localStorage.getItem('token')));
-      const token = JSON.parse(localStorage.getItem('token')).token;
+    if (localStorage.getItem('token')) {
+      const token = localStorage.getItem('token');
       if (!token) next({ path: '/' });
       else {
         try {

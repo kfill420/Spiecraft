@@ -17,6 +17,9 @@ importers:
       bulma:
         specifier: ^0.9.4
         version: 0.9.4
+      bulma-switch:
+        specifier: ^2.0.4
+        version: 2.0.4
       gh-pages:
         specifier: ^6.1.1
         version: 6.1.1
@@ -447,6 +450,9 @@ packages:
   braces@3.0.2:
     resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
     engines: {node: '>=8'}
+
+  bulma-switch@2.0.4:
+    resolution: {integrity: sha512-kMu4H0Pr0VjvfsnT6viRDCgptUq0Rvy7y7PX6q+IHg1xUynsjszPjhAdal5ysAlCG5HNO+5YXxeiu92qYGQolw==}
 
   bulma@0.9.4:
     resolution: {integrity: sha512-86FlT5+1GrsgKbPLRRY7cGDg8fsJiP/jzTqXXVqiUZZ2aZT8uemEOHlU1CDU+TxklPEZ11HZNNWclRBBecP4CQ==}
@@ -1520,6 +1526,8 @@ snapshots:
   braces@3.0.2:
     dependencies:
       fill-range: 7.0.1
+
+  bulma-switch@2.0.4: {}
 
   bulma@0.9.4: {}
 
