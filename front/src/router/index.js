@@ -21,6 +21,7 @@ const router = createRouter({
       path: '/cart',
       name: 'CartView',
       component: CartView,
+      meta: { requiresAuth: true }
     },
     {
       path: '/about',

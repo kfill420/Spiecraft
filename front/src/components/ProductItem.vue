@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import { addToCart } from '@/components/service/database';
 import { jwtDecode } from 'jwt-decode';
+import { useStore } from 'vuex';
 import { getImageUrl } from './utils/utils';
 
 const props = defineProps({
@@ -11,20 +11,22 @@ const props = defineProps({
   price: Array
 });
 
+const store = useStore();
+
 const productRef = ref(null);
 const imageRef = ref(null);
 const selectedIndex = ref(0);
 const weightSelect = ref(5);
 
 const addCart = async (id, value, price) => {
-  try {
-    const token = localStorage.getItem('token');
-    const decoded = jwtDecode(token);
-    const response = await addToCart({userId: decoded.userId, productId: id, quantity: value, price});
-    console.log(response);
-  } catch (error) {
-    console.log('error fetching: ', error);
-  }
+  // try {
+  //   const decoded = jwtDecode(localStorage.getItem('token'));
+  //   await addToCart({userId: decoded.userId, productId: id, quantity: value, price});
+  // } catch (error) {
+  //   console.log('error fetching: ', error);
+  // }
+  const decoded = jwtDecode(localStorage.getItem('token'));
+  store.dispatch('addToCart', { userId: decoded.userId, productId: id, quantity: value, price});
 }
 
 const options = [5, 10, 20];
@@ -35,10 +37,6 @@ const handleWeightChange = (e) => {
 
 const handleSubmit = () => {
   const value = weightSelect.value;
-  // console.log(value);
-  // console.log(props.id);
-  // console.log(selectedIndex.value);
-  // console.log(props.price[selectedIndex.value]);
   addCart(props.id, value, props.price[selectedIndex.value]);
 };
 

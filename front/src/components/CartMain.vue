@@ -1,24 +1,19 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watchEffect } from 'vue';
 import CartArticle from './CartArticle.vue';
-import { fetchCartData } from '@/components/service/database';
-import { jwtDecode } from 'jwt-decode';
+import { useStore } from 'vuex';
+import { computed, onMounted } from 'vue';
 
+const store = useStore();
 const products = ref([]);
-
-const fetchCart = async () => {
-  try {
-    const decoded = jwtDecode(localStorage.getItem('token'));
-    const response = await fetchCartData(decoded.userId);
-    products.value = response;
-    console.log(products.value);
-  } catch (error) {
-    console.log('error fetching: ', error);
-  }
-}
+const cart = computed(() => store.state.cart);
 
 onMounted(() => {
-  fetchCart();
+  store.dispatch('fetchCart');
+});
+
+watchEffect(() => {
+  products.value = cart.value;
 });
 
 </script>
@@ -27,7 +22,7 @@ onMounted(() => {
   <div class="store-container">
     <h1 class="title is-2">Panier</h1>
     <div class="is-flex is-flex-direction-column is-flex-wrap-wrap store">
-      <CartArticle v-for="product in products" :key="product.key" :id="product.id" :name="product.Product.name"
+      <CartArticle v-for="product in products" :key="product.key" :id="product.product_id" :name="product.Product.name"
         :description="product.Product.description" :price="product.price" />
     </div>
   </div>

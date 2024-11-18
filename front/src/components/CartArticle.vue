@@ -1,5 +1,7 @@
 <script setup>
 import { getImageUrl } from './utils/utils';
+import { jwtDecode } from 'jwt-decode';
+import { useStore } from 'vuex';
 
 const props = defineProps({
   id: Number,
@@ -8,8 +10,12 @@ const props = defineProps({
   price: String
 });
 
+const store = useStore();
+
 const deleteArticleFromCart = () => {
-  console.log('delete article from cart');
+  const decoded = jwtDecode(localStorage.getItem('token'));
+  // removeFromCart(decoded.userId, props.id)
+  store.dispatch('removeFromCart', { userId: decoded.userId, productId: props.id });
 }
 
 </script>

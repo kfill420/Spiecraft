@@ -53,9 +53,7 @@ const submitSignupForm = async () => {
 const submitSigninForm = async () => {
   try {
     const signinV = signinFormValue.value;
-    console.log(signinV);
     const response = await signin(signinV);
-    console.log(response);
     const token = response.token
     localStorage.setItem('token', token);
     emits('isLogged');

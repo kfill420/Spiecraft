@@ -4,14 +4,15 @@ import connectBtn from '/img/ico/user-solid.svg';
 import cartBtn from '/img/ico/cart-shopping-solid.svg';
 import logoutBtn from '/img/ico/log-out.svg';
 import AuthModal from '../components/AuthModal.vue';
-import { ref, onUpdated, onMounted } from 'vue';
+import { ref, onUpdated, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { jwtDecode } from 'jwt-decode';
 
-
+const token = ref(localStorage.getItem('token'));
 const modalIsOpen = ref(false);
 const logged = ref(false);
 const username = ref(null);
+const isMenuActive = ref(false);
 
 const router = useRouter();
 
@@ -54,7 +55,18 @@ const decodeFirstname = () => {
 }
 
 onMounted(() => {
+  window.addEventListener('storage', () => {
+    console.log('storage event');
+    token.value = localStorage.getItem('token');
+  })
   decodeFirstname();
+});
+
+watch(token, (newToken) => {
+  console.log('token', token.value);
+  if (token.value) {
+    decodeFirstname();
+  }
 });
 
 onUpdated(() => {
@@ -65,11 +77,9 @@ onUpdated(() => {
   }
 });
 
-window.addEventListener('storage', () => {
-  if (event.key === 'token') {
-    decodeFirstname();
-  }
-});
+const toggleMenu = () => {
+  isMenuActive.value = !isMenuActive.value;
+}
 
 </script>
 
@@ -84,14 +94,14 @@ window.addEventListener('storage', () => {
         <img :src="logo" width="100px">
       </router-link>
 
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" @click="toggleMenu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
 
-    <div id="navbarBasicExample" class="navbar-menu">
+    <div id="navbarBasicExample" :class="{ 'is-active': isMenuActive }" class="navbar-menu">
       <div class="navbar-start">
         <a class="navbar-item">
           Nos produits
@@ -123,13 +133,15 @@ window.addEventListener('storage', () => {
             <a v-if="logged" class="icoLink m-2" @click="logoutAction()">
               <img class="ico" :src="logoutBtn" alt="lougout button" />
             </a>
-            <a v-if="!logged" class="icoLink m-2" @click="toggleModal">
+            <a v-if="!logged" class="icoLink" @click="toggleModal">
               <img class="ico" :src="connectBtn" alt="connect button" />
+              <span class="btnConnexion ml-2 is-hidden-tablet is-hidden-desktop">Connexion</span>
             </a>
             <RouterLink v-else to="/profil" class="icoLink m-2">
               <img class="ico" :src="connectBtn" alt="connect button" />
+              
             </RouterLink>
-            <router-link to="/cart" class="icoLink m-2">
+            <router-link v-if="logged" to="/cart" class="icoLink m-2">
               <img class="ico" :src="cartBtn" alt="signup button" />
             </router-link>
           </div>
@@ -157,4 +169,9 @@ a:hover {
   margin-right: 2rem;
   transform: translateY(-20%);
 }
+
+.btnConnexion {
+  color: #4a4a4a
+}
+
 </style>
