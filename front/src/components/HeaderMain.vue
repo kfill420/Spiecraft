@@ -4,7 +4,7 @@ import connectBtn from '/img/ico/user-solid.svg';
 import cartBtn from '/img/ico/cart-shopping-solid.svg';
 import logoutBtn from '/img/ico/log-out.svg';
 import AuthModal from '../components/AuthModal.vue';
-import { ref, onUpdated, onMounted, watch } from 'vue';
+import { ref, onUpdated, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { jwtDecode } from 'jwt-decode';
 
@@ -62,12 +62,12 @@ onMounted(() => {
   decodeFirstname();
 });
 
-watch(token, (newToken) => {
-  console.log('token', token.value);
-  if (token.value) {
-    decodeFirstname();
-  }
-});
+// watch(token, (newToken) => {
+//   console.log('token', token.value);
+//   if (token.value) {
+//     decodeFirstname();
+//   }
+// });
 
 onUpdated(() => {
   const userData = JSON.parse(localStorage.getItem('userData'));
