@@ -32,7 +32,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .profile-data-subcontainer {
-  width: 40vw;
+    width: 100%;
 }
 
 h1 {

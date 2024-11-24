@@ -129,7 +129,7 @@ const toggleMenu = () => {
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons ">
-            <p v-if="logged" class="salutation">Bonjour {{ username }}</p>
+            <p v-if="logged" class="salutation is-hidden-mobile">Bonjour {{ username }}</p>
             <a v-if="logged" class="icoLink m-2" @click="logoutAction()">
               <img class="ico" :src="logoutBtn" alt="lougout button" />
             </a>

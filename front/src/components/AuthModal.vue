@@ -230,10 +230,6 @@ form {
   color: #001453;
 }
 
-.submitBtn {
-  width: 20%;
-}
-
 .error {
   position: absolute;
   bottom: 0;
