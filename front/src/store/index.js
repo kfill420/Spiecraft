@@ -4,7 +4,10 @@ import { jwtDecode } from 'jwt-decode';
 
 const store = createStore({
   state: {
-    cart: []
+    cart: [],
+    loginModalIsOpen: false,
+    logged: false,
+    username: '',
   },
   mutations: {
     addToCart(state, product) {
@@ -15,6 +18,23 @@ const store = createStore({
     },
     setCart(state, cart) {
       state.cart = cart;
+    },
+    setLoginModalIsOpen(state, loginModalIsOpen) {
+      state.loginModalIsOpen = loginModalIsOpen;
+    },
+    setLogged(state, logged) {
+      state.logged = logged;
+    },
+    setUsername(state, username) {
+      state.username = username;
+    },
+    initializeState(state) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decoded = jwtDecode(token, 'secret');
+        state.logged = true;
+        state.username = decoded.fullnameData.firstnameData;
+      }
     }
   },
   actions: {

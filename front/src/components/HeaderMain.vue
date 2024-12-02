@@ -3,91 +3,38 @@ import logo from '/img/logo.png';
 import connectBtn from '/img/ico/user-solid.svg';
 import cartBtn from '/img/ico/cart-shopping-solid.svg';
 import logoutBtn from '/img/ico/log-out.svg';
-import AuthModal from '../components/AuthModal.vue';
-import { ref, onUpdated, onMounted } from 'vue';
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { jwtDecode } from 'jwt-decode';
 
-const token = ref(localStorage.getItem('token'));
-const modalIsOpen = ref(false);
-const logged = ref(false);
-const username = ref(null);
+const store = useStore();
+
 const isMenuActive = ref(false);
 
+const logged = computed(() => store.state.logged);
+const username = computed(() => store.state.username);
+
 const router = useRouter();
-
-const toggleModal = () => {
-  modalIsOpen.value = !modalIsOpen.value;
-};
-
-const isLogged = () => {
-  logged.value = !logged.value;
-};
 
 const logoutAction = () => {
   if (logged.value === true) {
     localStorage.removeItem('token');
-    logged.value = false;
+    store.commit('setLogged', false);
     router.push({ path: '/' });
   }
 };
 
-const handleUsername = (name) => {
-  username.value = name;
-};
-
-const decodeFirstname = () => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    try {
-      const decoded = jwtDecode(token, 'secret');
-      logged.value = !!token;
-      username.value = decoded.fullnameData.firstnameData;
-    } catch {
-      console.log('Token invalid');
-      logged.value = false;
-      username.value = '';
-    }
-  } else {
-    logged.value = false;
-    username.value = '';
-  }
+const toggleMenu = () => {
+  document.getElementById('navbarBasicExample').classList.toggle('is-active');
 }
 
-onMounted(() => {
-  window.addEventListener('storage', () => {
-    console.log('storage event');
-    token.value = localStorage.getItem('token');
-  })
-  decodeFirstname();
-});
-
-// watch(token, (newToken) => {
-//   console.log('token', token.value);
-//   if (token.value) {
-//     decodeFirstname();
-//   }
-// });
-
-onUpdated(() => {
-  const userData = JSON.parse(localStorage.getItem('userData'));
-  if (userData) {
-    username.value = userData.fullnameData.firstnameData;
-    logged.value = !!username.value;
-  }
-});
-
-const toggleMenu = () => {
-  isMenuActive.value = !isMenuActive.value;
+const toggleModal = () => {
+  store.commit('setLoginModalIsOpen', true);
 }
 
 </script>
 
 <template>
-
-  <AuthModal :modalIsOpen="modalIsOpen" @toggleModal="toggleModal" :logged=logged @isLogged="isLogged"
-    :username=username @setUsername="handleUsername" />
-
   <nav class="navbar mb-4" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link to="/" class="container-logo">

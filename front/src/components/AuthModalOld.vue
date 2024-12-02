@@ -1,10 +1,17 @@
 <script setup>
-import { ref } from 'vue';
-import { useStore } from 'vuex';
-import { jwtDecode } from 'jwt-decode';
+import { ref, defineEmits } from 'vue';
 import { signup, signin } from '@/components/service/database';
 
-const store = useStore();
+defineProps({
+  modalIsOpen: Boolean,
+  isLogged: Boolean,
+});
+
+const emits = defineEmits(['toggleModal', 'isLogged', 'setUsername']);
+
+const closeModal = () => {
+  emits('toggleModal');
+};
 
 const loginFormSelected = ref(true);
 const signupFormValue = ref({
@@ -17,15 +24,12 @@ const signinFormValue = ref({
   email: '',
   password: ''
 });
+
 const errorMessage = ref(null);
 
 const toggleForm = () => {
   loginFormSelected.value = !loginFormSelected.value;
   errorMessage.value = null;
-}
-
-const closeModal = () => {
-  store.commit('setLoginModalIsOpen', false)
 }
 
 const resetSignupForm = () => {
@@ -41,8 +45,7 @@ const submitSignupForm = async () => {
   const signupV = signupFormValue.value;
   await signup(signupV);
   resetSignupForm();
-  // closeModal();
-  store.commit('setLoginModalIsOpen', false)
+  closeModal();
   errorMessage.value = null;
   loginFormSelected.value = true;
 }
@@ -52,14 +55,9 @@ const submitSigninForm = async () => {
     const signinV = signinFormValue.value;
     const response = await signin(signinV);
     const token = response.token
-    const decoded = jwtDecode(token, 'secret');
-    console.log(decoded);
     localStorage.setItem('token', token);
-    // emits('isLogged');
-    // closeModal();
-    store.commit('setUsername', decoded.fullnameData.firstnameData);
-    store.commit('setLoginModalIsOpen', false)
-    store.commit('setLogged', true);
+    emits('isLogged');
+    closeModal();
     errorMessage.value = null;
   } catch (error) {
     const errMess = error.response.data.errorMessage
@@ -72,7 +70,7 @@ const submitSigninForm = async () => {
 
 <template>
 
-  <div class="modal is-active">
+  <div class="modal" :class="{ 'is-active': modalIsOpen }">
     <div class="modal-background" @click="closeModal"></div>
     <div class="modal-card">
       <header class="modal-card-head">

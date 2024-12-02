@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { jwtDecode } from 'jwt-decode';
 import { useStore } from 'vuex';
 import { getImageUrl } from './utils/utils';
@@ -19,12 +19,6 @@ const selectedIndex = ref(0);
 const weightSelect = ref(5);
 
 const addCart = async (id, value, price) => {
-  // try {
-  //   const decoded = jwtDecode(localStorage.getItem('token'));
-  //   await addToCart({userId: decoded.userId, productId: id, quantity: value, price});
-  // } catch (error) {
-  //   console.log('error fetching: ', error);
-  // }
   const decoded = jwtDecode(localStorage.getItem('token'));
   store.dispatch('addToCart', { userId: decoded.userId, productId: id, quantity: value, price});
 }
@@ -37,7 +31,13 @@ const handleWeightChange = (e) => {
 
 const handleSubmit = () => {
   const value = weightSelect.value;
-  addCart(props.id, value, props.price[selectedIndex.value]);
+  const logged = computed(() => store.state.logged);
+  if (logged.value) {
+    addCart(props.id, value, props.price[selectedIndex.value]);
+  } else {
+    store.commit('setLoginModalIsOpen', true);
+  }
+  
 };
 
 const zoomIn = () => {

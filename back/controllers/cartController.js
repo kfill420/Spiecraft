@@ -21,7 +21,6 @@ async function getCart(req, res) {
     console.log("Erreur:" + error);
     res.status(500).json({ errorMessage: "Erreur chargement du panier" });
   }
-
 }
 
 async function addToCart(req, res) {

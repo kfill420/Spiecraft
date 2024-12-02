@@ -63,6 +63,8 @@ async function signinUser(req, res) {
   const userData = { userId, fullnameData, emailData }
   const token = jwt.sign(userData, 'secret', { expiresIn: '1h' });
 
+  req.session.user = userData;
+
   return res.status(200).json({ message: "Connexion réussie", token });
 };
 

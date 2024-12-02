@@ -7,5 +7,6 @@ import store from './store'
 
 const app = createApp(App)
 app.use(router)
+store.commit('initializeState')
 app.use(store)
 app.mount('#app')

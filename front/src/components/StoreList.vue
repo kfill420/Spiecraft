@@ -26,12 +26,12 @@ onMounted(() => {
 
 <template>
   <div class="store-container">
-    <h1 class="title is-2">Trésors de poivre</h1>
-    <div v-if="loading" class="container is-flex is-align-items-center is-justify-content-center">
+    <h1 class="store-container_title title is-2">Trésors de poivre</h1>
+    <div v-if="loading" class="store-container_loading-container container is-flex is-align-items-center is-justify-content-center">
       <img class="svg is-three-quarters" src="@/assets/loading.svg" />
     </div>
     <div v-else
-      class="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-items-center is-justify-content-center store">
+      class="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-items-center is-justify-content-center store-container_store">
       <ProductItem class="" v-for="product in products" :key="product.key" :id="product.id" :name="product.name"
         :description="product.description" :price="product.price" />
     </div>
@@ -39,23 +39,23 @@ onMounted(() => {
 
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .store-container {
   width: 100%;
-}
 
-h1 {
-  font-family: 'Cormorant', serif;
-  font-weight: 900;
-  color: #DADADA
-}
+  &_title {
+    font-family: 'Cormorant', serif;
+    font-weight: 900;
+    color: #DADADA
+  }
 
-.store {
-  width: 100%;
-  gap: 0.5rem;
-}
+  &_store {
+    width: 100%;
+    gap: 0.5rem;
+  }
 
-.svg {
-  width: 20%;
+  &_loading-container {
+    width: 20%;
+  }
 }
 </style>
