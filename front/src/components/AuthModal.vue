@@ -53,7 +53,6 @@ const submitSigninForm = async () => {
     const response = await signin(signinV);
     const token = response.token
     const decoded = jwtDecode(token, 'secret');
-    console.log(decoded);
     localStorage.setItem('token', token);
     // emits('isLogged');
     // closeModal();
