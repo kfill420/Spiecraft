@@ -1,26 +1,20 @@
 const express = require("express")
-const session = require("express-session");
+const authMiddleware = require("../middlewares/authMiddleware");
+const connectionRouter = require("./connectionRouter");
 const productRouter = require("./productRouter");
 const userRouter = require("./userRouter");
 const cartRouter = require("./cartRouter");
-const sessionMiddleware = require("../middlewares/sessionMiddleware");
 const notFoundMiddleware = require("../middlewares/notFoundMiddleware");
 
-const app = new express();
+const router = express.Router();
 
-app.use(session({
-  saveUninitialized: true,
-  resave: true,
-  secret: process.env.SESSION_SECRET,
-  cookie: { secure: false }
-}));
+router.use(connectionRouter);
+router.use(productRouter);
 
-app.use(express.urlencoded({ extended: true }));
+// Authentification needed
+router.use(authMiddleware, userRouter);
+router.use(authMiddleware, cartRouter);
 
-app.use(productRouter);
-app.use(userRouter);
-app.use(cartRouter);
+router.use(notFoundMiddleware);
 
-app.use(notFoundMiddleware);
-
-module.exports = app;
+module.exports = router;

@@ -11,15 +11,15 @@ const store = useStore();
 
 const isMenuActive = ref(false);
 
-const logged = computed(() => store.state.logged);
-const username = computed(() => store.state.username);
+const logged = computed(() => store.state.auth.logged);
+const username = computed(() => store.state.auth.username);
 
 const router = useRouter();
 
 const logoutAction = () => {
   if (logged.value === true) {
     localStorage.removeItem('token');
-    store.commit('setLogged', false);
+    store.commit('auth/setLogged', false);
     router.push({ path: '/' });
   }
 };
@@ -29,7 +29,7 @@ const toggleMenu = () => {
 }
 
 const toggleModal = () => {
-  store.commit('setLoginModalIsOpen', true);
+  store.commit('auth/setLoginModalIsOpen', true);
 }
 
 </script>

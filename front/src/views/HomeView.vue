@@ -8,7 +8,7 @@ import AuthModal from '@/components/AuthModal.vue';
 
 const store = useStore();
 
-const loginModalisOpen = computed(() => store.state.loginModalIsOpen);
+const loginModalisOpen = computed(() => store.state.auth.loginModalIsOpen);
 
 </script>
 

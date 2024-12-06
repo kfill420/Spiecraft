@@ -4,6 +4,7 @@ const cw = require("./ControllerErrorWrapper");
 
 const router = new Router();
 
-router.patch("/updateProfile/:userId", cw(userController.updateProfile));
+router.post("/signup", cw(userController.signupUser));
+router.post("/signin", cw(userController.signinUser));
 
 module.exports = router;

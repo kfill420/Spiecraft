@@ -1,10 +1,18 @@
+// Replaced by JWT
 const pg = require("pg");
 const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
 
-const client = new pg.Client(process.env.PG_URL);
-client.connect();
+const pgPool = new pg.Pool({
+  connectionString: process.env.PG_URL
+})
 
 const sessionMiddleware = session({
+  store: new pgSession({
+    pool: pgPool,
+    tableName: "users_session",
+    createTableIfMissing: true
+  }),
   secret: process.env.SESSION_SECRET,
   saveUninitialized: true,
   resave: false,

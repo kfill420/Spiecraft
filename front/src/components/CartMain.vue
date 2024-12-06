@@ -6,10 +6,10 @@ import { computed, onMounted } from 'vue';
 
 const store = useStore();
 const products = ref([]);
-const cart = computed(() => store.state.cart);
+const cart = computed(() => store.state.cart.cart);
 
 onMounted(() => {
-  store.dispatch('fetchCart');
+  store.dispatch('cart/fetchCart');
 });
 
 watchEffect(() => {

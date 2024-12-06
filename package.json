@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "deploy": "gh-pages -d dist",
-    "build": "cd ./front && vite build",
+    "deploy": "cd ./front && gh-pages -d dist",
+    "predeploy": "cd ./front && vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:front": "cd front && pnpm run dev",
     "dev:back": "cd back && pnpm run dev",
@@ -18,6 +18,7 @@
     "gh-pages": "^6.1.1"
   },
   "dependencies": {
+    "connect-pg-simple": "^10.0.0",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "vuex": "^4.1.0"

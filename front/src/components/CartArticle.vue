@@ -14,8 +14,7 @@ const store = useStore();
 
 const deleteArticleFromCart = () => {
   const decoded = jwtDecode(localStorage.getItem('token'));
-  // removeFromCart(decoded.userId, props.id)
-  store.dispatch('removeFromCart', { userId: decoded.userId, productId: props.id });
+  store.dispatch('cart/removeFromCart', { userId: decoded.userId, productId: props.id });
 }
 
 </script>

@@ -40,8 +40,17 @@ async function signupUser(req, res) {
 };
 
 async function signinUser(req, res) {
-  if (req.session.user)
-    return res.json({ errorMessage: "Déjà connecté" });
+  const authHeader = req.headers['authorization'];
+  const tokenToCheck = authHeader && authHeader.split(' ')[1];
+  if (tokenToCheck) {
+    try {
+      jwt.verify(tokenToCheck, process.env.JWT_SECRET);
+      return res.json({ errorMessage: "Déjà connecté" });
+    } catch (err) {
+      console.log(err);
+      return res.json({ errorMessage: "Token invalide" });
+    }
+  }
 
   const { email, password } = req.body;
 
@@ -61,33 +70,41 @@ async function signinUser(req, res) {
   const fullnameData = { firstnameData, lastnameData };
   const emailData = user.dataValues.email;
   const userData = { userId, fullnameData, emailData }
-  const token = jwt.sign(userData, 'secret', { expiresIn: '1h' });
-
-  req.session.user = userData;
+  const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '1h' });
 
   return res.status(200).json({ message: "Connexion réussie", token });
 };
 
-async function getUserData(req, res) {
-  if (!req.session.user)
-    return res.json({ errorMessage: "Vous n'êtes pas connecté" });
+async function updateProfile(req, res) {
+  try {
+    const userId = req.params.userId;
+    const { type, value } = req.body;
 
-  const user = await Users.findOne({ where: { email: email } });
-  console.log(user);
-  if (!user)
-    return res.status(401).json({ errorMessage: "Email ou mot de passe incorrecte" });
+    const updateData = {};
+    updateData[type] = value;
 
-  const isMatching = await bcrypt.compare(password, user.password);
-  if (!isMatching)
-    return res.status(401).json({ errorMessage: "Email ou mot de passe incorrecte" });
+    console.log(req.body);
 
-  const token = jwt.sign({ userId: user.id }, 'secret')
-  const firstname = user.dataValues.firstname;
+    const response = await Users.update(
+      updateData,
+      {
+        where: {
+          id: userId
+        }
+      }
+    );
+    console.log(response);
 
-  return res.status(200).json({ message: "Connexion réussie", token, firstname });
+    return res.status(200).json({ message: "Changement réussie" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ errorMessage: "Erreur interne" });
+  }
+
 };
 
 module.exports = {
   signupUser,
-  signinUser
+  signinUser,
+  updateProfile,
 };

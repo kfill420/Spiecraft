@@ -25,7 +25,7 @@ const toggleForm = () => {
 }
 
 const closeModal = () => {
-  store.commit('setLoginModalIsOpen', false)
+  store.commit('auth/setLoginModalIsOpen', false)
 }
 
 const resetSignupForm = () => {
@@ -41,7 +41,6 @@ const submitSignupForm = async () => {
   const signupV = signupFormValue.value;
   await signup(signupV);
   resetSignupForm();
-  // closeModal();
   store.commit('setLoginModalIsOpen', false)
   errorMessage.value = null;
   loginFormSelected.value = true;
@@ -54,11 +53,9 @@ const submitSigninForm = async () => {
     const token = response.token
     const decoded = jwtDecode(token, 'secret');
     localStorage.setItem('token', token);
-    // emits('isLogged');
-    // closeModal();
-    store.commit('setUsername', decoded.fullnameData.firstnameData);
-    store.commit('setLoginModalIsOpen', false)
-    store.commit('setLogged', true);
+    store.commit('auth/setUsername', decoded.fullnameData.firstnameData);
+    store.commit('auth/setLoginModalIsOpen', false)
+    store.commit('auth/setLogged', true);
     errorMessage.value = null;
   } catch (error) {
     const errMess = error.response.data.errorMessage

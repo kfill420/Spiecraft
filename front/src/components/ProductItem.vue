@@ -20,7 +20,7 @@ const weightSelect = ref(5);
 
 const addCart = async (id, value, price) => {
   const decoded = jwtDecode(localStorage.getItem('token'));
-  store.dispatch('addToCart', { userId: decoded.userId, productId: id, quantity: value, price});
+  store.dispatch('cart/addToCart', { userId: decoded.userId, productId: id, quantity: value, price});
 }
 
 const options = [5, 10, 20];
@@ -35,7 +35,7 @@ const handleSubmit = () => {
   if (logged.value) {
     addCart(props.id, value, props.price[selectedIndex.value]);
   } else {
-    store.commit('setLoginModalIsOpen', true);
+    store.commit('auth/setLoginModalIsOpen', true);
   }
   
 };

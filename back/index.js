@@ -1,11 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const router = require('./routers');
-const session = require('express-session');
 const path = require(`node:path`);
 const port = process.env.PORT || `3000`;
 const app = express();
 const cors = require("cors");
+const sessionMiddleware = require('./middlewares/sessionMiddleware');
 
 app.use(cors({
   origin: ['http://localhost:5173', 'https://kfill420.github.io'],
@@ -13,16 +13,6 @@ app.use(cors({
 }));
 
 app.use(express.static(path.join(__dirname, './public')));
-
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: 'Guess it!',
-  cookie: {
-    secure: false,
-    maxAge: (1000 * 60 * 60)
-  }
-}));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
