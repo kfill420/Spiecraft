@@ -8,5 +8,6 @@ import store from './store'
 const app = createApp(App)
 app.use(router)
 store.commit('auth/initializeState')
+store.commit('profile/initializeState')
 app.use(store)
 app.mount('#app')

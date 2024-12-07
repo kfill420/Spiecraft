@@ -12,7 +12,7 @@ const store = useStore();
 const isMenuActive = ref(false);
 
 const logged = computed(() => store.state.auth.logged);
-const username = computed(() => store.state.auth.username);
+const username = computed(() => store.state.profile.profile.firstname);
 
 const router = useRouter();
 

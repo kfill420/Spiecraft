@@ -31,7 +31,7 @@ const handleWeightChange = (e) => {
 
 const handleSubmit = () => {
   const value = weightSelect.value;
-  const logged = computed(() => store.state.logged);
+  const logged = computed(() => store.state.auth.logged);
   if (logged.value) {
     addCart(props.id, value, props.price[selectedIndex.value]);
   } else {

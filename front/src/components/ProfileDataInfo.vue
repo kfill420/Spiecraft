@@ -13,24 +13,19 @@ const props = defineProps({
 const handleClickBtn = () => {
   switch (props.data) {
     case 'firstname':
-      store.commit('profile/setProfileModalIsOpen', true);
-      store.commit('profile/setProfileModalType', 'firstname');
+      store.commit('profile/setProfileModal', { isOpen: true, type: 'firstname' });
       break;
     case 'lastname':
-      store.commit('profile/setProfileModalIsOpen', true);
-      store.commit('profile/setProfileModalType', 'lastname');
+    store.commit('profile/setProfileModal', { isOpen: true, type: 'lastname' });
       break;
     case 'mail':
-      store.commit('profile/setProfileModalIsOpen', true);
-      store.commit('profile/setProfileModalType', 'mail');
+    store.commit('profile/setProfileModal', { isOpen: true, type: 'email' });
       break;
     case 'password':
-      store.commit('profile/setProfileModalIsOpen', true);
-      store.commit('profile/setProfileModalType', 'password');
+    store.commit('profile/setProfileModal', { isOpen: true, type: 'password' });
       break;
     case '2fa':
-      store.commit('profile/setProfileModalIsOpen', true);
-      store.commit('profile/setProfileModalType', '2fa');
+    store.commit('profile/setProfileModal', { isOpen: true, type: '2fa' });
       break;
     default:
       console.log('default');

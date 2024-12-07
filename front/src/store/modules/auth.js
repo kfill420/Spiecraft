@@ -3,7 +3,6 @@ import { jwtDecode } from 'jwt-decode';
 const state = {
   loginModalIsOpen: false,
   logged: false,
-  username: '',
 };
 
 const mutations = {
@@ -13,15 +12,19 @@ const mutations = {
   setLogged(state, logged) {
     state.logged = logged;
   },
-  setUsername(state, username) {
-    state.username = username;
-  },
   initializeState(state) {
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token, 'secret');
-      state.logged = true;
-      state.username = decoded.fullnameData.firstnameData;
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp < currentTime) {
+        state.logged = false;
+        state.username = '';
+        localStorage.removeItem('token');
+      } else {
+        state.logged = true;
+        state.username = decoded.fullnameData.firstnameData;
+      }
     }
   },
 };

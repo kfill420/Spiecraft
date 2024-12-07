@@ -5,21 +5,6 @@ export async function fetchAllProductsData() {
   return responseHttp.data;
 }
 
-// export async function fetchCartData(userId) {
-//   const responseHttp = await instanceAxios.get(`/cart/${userId}`);
-//   return responseHttp.data;
-// }
-
-// export async function addToCart(id) {
-//   const responseHttp = await instanceAxios.post(`/cart`, id);
-//   return responseHttp.data;
-// }
-
-// export async function removeFromCart(userId, productId) {
-//   const responseHttp = await instanceAxios.delete(`/cart/${userId}/${productId}`);
-//   return responseHttp.data;
-// }
-
 export async function fetchAllProfileInfos() {
   const responseHttp = await instanceAxios.get(`/products`);
   return responseHttp.data;

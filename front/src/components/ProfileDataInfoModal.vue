@@ -4,66 +4,69 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
-const errorMessage = ref(null);
+const errorMessage = computed(() => store.state.profile.profileModalError);
 
 const profileModalType = computed(() => store.state.profile.profileModalType);
-
-const closeModal = () => {
-  store.commit('profile/setProfileModalIsOpen', false);
-  store.commit('profile/setProfileModalType', '');
-}
 
 const translation = {
   firstname: 'Prénom',
   lastname: 'Nom',
   password: 'Mot de passe',
-  mail: 'Email',
-}
+  email: 'Email',
+};
 
 const formProfilData = ref({
   firstname: '',
   lastname: '',
   password: '',
-  mail: '',
-})
+  email: '',
+});
+
+const closeModal = () => {
+  store.commit('profile/setProfileModal', { isOpen: false, type: '' });
+};
 
 const handleSubmit = () => {
-  try {
-    store.dispatch('profile/updateProfile', { type: profileModalType.value, value: formProfilData.value[profileModalType.value]});
-    store.commit('profile/setProfileModalIsOpen', false);
-  } catch {
-    errorMessage.value = 'Erreur lors de la modification';
-  }
-}
+  store.dispatch('profile/updateProfile', { type: profileModalType.value, value: formProfilData.value[profileModalType.value]});
+};
 </script>
 
 <template>
   <div class="modal is-active">
     <div class="modal-background" @click="closeModal"></div>
     <div class="modal-card">
-      <form @submit.prevent="handleSubmit">
+      
         <header class="modal-card-head">
           <p class="modal-card-title">Modification</p>
           <button class="delete" aria-label="close" @click="closeModal"></button>
         </header>
         <section class="modal-card-body">
+          <form @submit.prevent="handleSubmit">
             <div class="login-field">
               <label :for="profileModalType">{{ translation[profileModalType] }}</label>
-              <input :id="profileModalType" v-model=formProfilData[profileModalType] class="input" type="text" required>
+              <input :id="profileModalType" v-model="formProfilData[profileModalType]" class="input" :type="profileModalType == 'password' ? 'password' : 'text'" required>
+            </div>
+            <div class="buttons">
+              <button type="submit" class="button is-primary">Enregistrer</button>
+              <button type="button" class="button" @click="closeModal">Annuler</button>
             </div>
           <span class="error">{{ errorMessage }}</span>
+        </form>
         </section>
-        <footer class="modal-card-foot">
-          <div class="buttons">
-            <button type="submit" class="button is-success">Enregistrer</button>
-            <button class="button" @click="closeModal">Annuler</button>
-          </div>
-        </footer>
-      </form>
+
+      
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.error {
+  bottom: 0;
+  color: #9B0202;
+  font-weight: 500;
+}
 
+.buttons {
+  margin: 1rem 0 0 0;
+}
 </style>

@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import { useStore } from 'vuex';
-import { jwtDecode } from 'jwt-decode';
 import { signup, signin } from '@/components/service/database';
 
 const store = useStore();
@@ -38,12 +37,18 @@ const resetSignupForm = () => {
 }
 
 const submitSignupForm = async () => {
-  const signupV = signupFormValue.value;
-  await signup(signupV);
-  resetSignupForm();
-  store.commit('setLoginModalIsOpen', false)
-  errorMessage.value = null;
-  loginFormSelected.value = true;
+  try {
+    const signupV = signupFormValue.value;
+    await signup(signupV);
+    resetSignupForm();
+    store.commit('auth/setLoginModalIsOpen', false)
+    errorMessage.value = null;
+    loginFormSelected.value = true;
+  } catch(error) {
+    const errMess = error.response.data.errorMessage;
+    errorMessage.value = errMess;
+  }
+  
 }
 
 const submitSigninForm = async () => {
@@ -51,15 +56,13 @@ const submitSigninForm = async () => {
     const signinV = signinFormValue.value;
     const response = await signin(signinV);
     const token = response.token
-    const decoded = jwtDecode(token, 'secret');
     localStorage.setItem('token', token);
-    store.commit('auth/setUsername', decoded.fullnameData.firstnameData);
     store.commit('auth/setLoginModalIsOpen', false)
     store.commit('auth/setLogged', true);
+    store.commit('profile/initializeState');
     errorMessage.value = null;
   } catch (error) {
-    const errMess = error.response.data.errorMessage
-    console.error(errMess);
+    const errMess = error.response.data.errorMessage;
     errorMessage.value = errMess;
   }
 }
@@ -232,6 +235,6 @@ form {
   position: absolute;
   bottom: 0;
   color: #9B0202;
-  font-weight: 600;
+  font-weight: 500;
 }
 </style>
