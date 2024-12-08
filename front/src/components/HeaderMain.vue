@@ -51,7 +51,7 @@ const toggleModal = () => {
     <div id="navbarBasicExample" :class="{ 'is-active': isMenuActive }" class="navbar-menu">
       <div class="navbar-start">
         <a class="navbar-item">
-          Nos produits
+          Recettes
         </a>
 
         <div class="navbar-item has-dropdown is-hoverable">

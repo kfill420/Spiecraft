@@ -77,6 +77,7 @@ async function updateProfile(req, res) {
   try {
     const userIdParams = req.params.userId;
     const { type, value } = req.body;
+    console.log(type, value);
 
     const updateData = {};
 
@@ -94,17 +95,18 @@ async function updateProfile(req, res) {
       const nbOfSalt = parseInt(process.env.nbOfSalt) || 10;
       const hashedPassword = await bcrypt.hash(value, nbOfSalt);
       updateData.password = hashedPassword;
-    } else {
-      updateData[type] = value;
-    }
 
-    if (type === "mail") {
+    } else if (type === "email") {
       if (!validator.validate(value))
         return res.status(400).json({ errorMessage: "Email invalide" });
 
       const existingUser = await Users.findOne({ where: { email: value } });
       if (existingUser !== null)
-        return res.json({ errorMessage: "L'adresse email existe déjà" });
+        return res.status(400).json({ errorMessage: "L'adresse email existe déjà" });
+
+      updateData.email = value;
+    } else {
+      updateData[type] = value;
     }
 
     await Users.update(

@@ -8,7 +8,7 @@ const cors = require("cors");
 const sessionMiddleware = require('./middlewares/sessionMiddleware');
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://kfill420.github.io'],
+  origin: ['http://localhost:5173', 'https://spiecraft.vercel.app'],
   optionsSuccessStatus: 200
 }));
 
