@@ -77,7 +77,6 @@ async function updateProfile(req, res) {
   try {
     const userIdParams = req.params.userId;
     const { type, value } = req.body;
-    console.log(type, value);
 
     const updateData = {};
 

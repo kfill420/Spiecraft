@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import ProductItem from './ProductItem.vue';
 import { fetchAllProductsData } from '@/components/service/database';
+import LoadingAnim from "./LoadingAnim.vue";
 
 const products = ref([]);
 const loading = ref(false);
@@ -28,7 +29,7 @@ onMounted(() => {
   <div class="store-container">
     <h1 class="store-container_title title is-2">Trésors de poivre</h1>
     <div v-if="loading" class="store-container_loading-container container is-flex is-align-items-center is-justify-content-center">
-      <img class="svg is-three-quarters" src="@/assets/loading.svg" />
+      <LoadingAnim />
     </div>
     <div v-else
       class="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-items-center is-justify-content-center store-container_store">
